@@ -1,8 +1,7 @@
 package test.driven.development.tdd.chapter1
 
-class Dollar(amount: Int) : Money(amount) {
-
-    fun times(multiplier: Int): Dollar {
-        return Dollar(amount.times(multiplier))
-    }
+/**
+ * 리팩토링 후 제거
+ */
+class Dollar(amount: Int, currency: String) : Money(amount, currency) {
 }
