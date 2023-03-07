@@ -1,7 +1,11 @@
 package test.driven.development.tdd.chapter1
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.matchers.types.shouldBeSameInstanceAs
+import io.kotest.matchers.types.shouldBeTypeOf
 import org.junit.jupiter.api.Test
 
 internal class MoneyTest : DescribeSpec({
@@ -105,9 +109,37 @@ internal class MoneyTest : DescribeSpec({
 
     @Test
     fun `test mixed addition`() {
-        val fiveBucks = Money.dollar(5)
-        Money.franc(10)
+        val fiveBucks: Expression = Money.dollar(5)
+        val tenFrancs: Expression = Money.franc(10)
         val bank = Bank()
         bank.addRate("CHF", "USD", 2)
+
+        val result = bank.reduce(fiveBucks.plus(tenFrancs), "USD")
+
+        result shouldBe Money.dollar(10)
+    }
+
+    @Test
+    fun `test sum plus money`() {
+        val fiveBucks: Expression = Money.dollar(5)
+        val tenFrancs: Expression = Money.franc(10)
+        val bank = Bank()
+        bank.addRate("CHF", "USD", 2)
+        val sum: Expression = Sum(fiveBucks, tenFrancs).plus(fiveBucks)
+        val result = bank.reduce(sum, "USD")
+
+        result shouldBe Money.dollar(15)
+    }
+
+    @Test
+    fun `test sum times`() {
+        val fiveBucks: Expression = Money.dollar(5)
+        val tenFrancs: Expression = Money.franc(10)
+        val bank = Bank()
+        bank.addRate("CHF", "USD", 2)
+        val sum: Expression = Sum(fiveBucks, tenFrancs).times(2)
+        val result = bank.reduce(sum, "USD")
+
+        result shouldBe Money.dollar(20)
     }
 }

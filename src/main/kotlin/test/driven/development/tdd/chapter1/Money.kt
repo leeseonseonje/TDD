@@ -1,16 +1,14 @@
 package test.driven.development.tdd.chapter1
 
-import java.util.*
-
 class Money(val amount: Int,
             private val currency: String) : Expression {
 
-    fun times(multiplier: Int): Money {
+    override fun times(multiplier: Int): Expression {
         return Money(amount.times(multiplier), currency)
     }
 
-    fun plus(append: Money): Expression {
-        return Sum(this, append)
+    override fun plus(addend: Expression): Expression {
+        return Sum(this, addend)
     }
 
     fun currency(): String {
